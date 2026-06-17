@@ -22,7 +22,6 @@ travel-city-explorer-api-boilerplate/
 ├── .env.example
 ├── src/
 │   ├── config/
-│   │   └── db.js
 │   ├── controllers/
 │   │   └── ...15 controllers files
 │   ├── middlewares/
@@ -127,7 +126,7 @@ Each developer should implement these 5 APIs for their assigned model:
 POST   /api/<resource>
 GET    /api/<resource>
 GET    /api/<resource>/:id
-PUT    /api/<resource>/:id
+PUT/PATCH    /api/<resource>/:id
 DELETE /api/<resource>/:id
 ```
 
@@ -154,17 +153,9 @@ Each developer should:
 2. Open their assigned controller file.
 3. Implement all CRUD functions.
 4. Test all APIs in Postman, Thunder Client, or Hoppscotch.
-5. Commit changes.
+5. Commit changes each changes.
 6. Push branch to GitHub.
-7. Create a pull request.
+7. Create a pull request for main branch.
 
 ## Example CRUD Logic
 
-See:
-
-```txt
-src/controllers/_crudControllerTemplate.js
-src/controllers/_sampleCompletedCountryController.js
-```
-
-The controller files currently return `501 Not Implemented`. That is intentional so each student can complete their own model CRUD.
