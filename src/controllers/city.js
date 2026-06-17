@@ -17,4 +17,24 @@ const createCity = async (req, res) => {
   }
 };
 
-module.exports = { createCity };
+const getCities = async (req, res) => {
+  try {
+    const cities = await City.find();
+    res.status(200).json({
+      success: true,
+      message: "Cities fetched successfully",
+      data: cities,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
+module.exports = { 
+    createCity,
+    getCities
+};
