@@ -1,5 +1,7 @@
 const TravelExpense = require('../models/TravelExpense');
 
+const validateObejectId = require("../middlewares/validateObjectId");
+
 const createTravelExpense = async (req, res) => {                       /// To create travel-expense
     try{
         const travelExpense = await TravelExpense.create(req.body);
@@ -24,17 +26,43 @@ const getTravelExpenses = async (req, res) => {
 
         return res.status(200).json({
             success: true,
-            message: "Travel expense getched succesfully",
+            message: "Travel expense fetched succesfully",
             data: travelExpenses,
         });                                                     /// agar suuces hua toh
     } catch (error) {
         return res.status(500).json({
             success: false,
             message: error.message,
-            data: null,
+            data: null,                                         /// agar fail hua toh
         });           
     }
 }
 
 
-module.exports = {createTravelExpense, getTravelExpenses}
+const getTravelExpenseById = async (req, res) => {
+    try {
+        const expense = await TravelExpense.findById(req.params.id);
+ 
+        if(!expense) {
+            return res.status(404).json({
+            success: false,
+            message: "Travel expense not found",
+            data: null,                                         /// agar travel expense ki id match nahi hui to fail honga
+        });   
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: "Travel expense fetched succesfully",
+            data: expense,                                      /// agar suuces hua toh
+        });                    
+    }  catch (error) {
+        return res.status(500).json({
+            success: false,
+            message: error.message,
+            data: null,                                         /// agar fail hua toh
+        });  
+}
+}
+
+module.exports = {createTravelExpense, getTravelExpenses, getTravelExpenseById,};
