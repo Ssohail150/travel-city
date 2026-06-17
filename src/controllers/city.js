@@ -58,10 +58,38 @@ const getCityById = async (req, res) => {
   }
 };
 
+const updateCity = async (req, res) => {
+  try {
+    const city = await City.findByIdAndUpdate(req.params.id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+    if (!city) {
+      return res.status(404).json({
+        success: false,
+        message: "City not found",
+        data: null,
+      });
+    }
+    res.status(200).json({
+      success: true,
+      message: "City updated successfully",
+      data: city,
+    });
+  } catch (error) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+      data: null,
+    });
+  }
+};
+
 module.exports = { 
     createCity,
     getCities,
-    getCityById
+    getCityById,
+    updateCity
 };
 
 
