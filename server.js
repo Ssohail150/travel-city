@@ -2,6 +2,7 @@ require('dotenv').config();
 require('./src/models/db');
 
 const express = require('express');
+const hotelRoutes = require("./src/routes/hotel")
 const cors = require('cors');
 const morgan = require('morgan');
 const notFound = require('./src/middlewares/notFound');
@@ -12,6 +13,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+app.use("/hotel", hotelRoutes)
 
 app.get('/check', (req, res) => {
   res.json({
