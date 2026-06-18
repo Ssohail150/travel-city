@@ -6,8 +6,9 @@ const cors = require('cors');
 const morgan = require('morgan');
 const notFound = require('./src/middlewares/notFound');
 
-const app = express();
 
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -27,10 +28,9 @@ app.get('/api/health', (req, res) => {
     timestamp: new Date().toISOString(),
   });
 });
+const localGuideRoutes = require('./src/routes/LocalGuide');
 
-// TODO: EVERYONE CREATE YOUR ROUTES FROM HERE
-
-
+app.use("/api/local-guides",localGuideRoutes);
 
 app.use(notFound);
 
