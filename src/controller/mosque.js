@@ -125,4 +125,39 @@ const getMosqueById = async (req, res) => {
         });
     }
 };
-module.exports = {addMosque,getMosques,getMosqueById}
+const updateMosque = async (req, res) => {
+    try {
+        const { id } = req.params;
+
+        const updateResult = await Mosque.updateOne(
+            { _id: id },
+            { $set: req.body }
+        );
+
+        if (updateResult.matchedCount === 0) {
+            return res.status(404).send({
+                success: false,
+                message: "Mosque not found",
+                data: null
+            });
+        }
+
+        const updatedMosque = await Mosque.findById(id);
+
+        return res.status(200).send({
+            success: true,
+            message: "Mosque updated successfully",
+            data: updatedMosque
+        });
+    } catch (error) {
+        console.log("Error updating mosque:", error);
+
+        return res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+module.exports = {addMosque,getMosques,getMosqueById,updateMosque}
