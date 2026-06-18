@@ -76,7 +76,39 @@ const getCultureNote = async (req, res) => {
     }
 }
 
+const getCultureNoteById = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const noteDbRes = await Note.findById(id);
+
+        if (!noteDbRes) {
+            return res.status(404).send({
+                success: false,
+                message: "Culture Note not found",
+                data: null
+            });
+        }
+
+        return res.status(200).send({
+            success: true,
+            message: "Culture Note fetched successfully!",
+            data: noteDbRes
+        });
+
+    } catch (error) {
+        console.log("Error in getting Culture Note by ID:", error);
+
+        return res.status(500).send({
+            success: false,
+            message: error.message,
+            data: null
+        });
+    }
+};
+
+
 module.exports = {
     createCultureNote,
     getCultureNote,
+    getCultureNoteById,
 }
