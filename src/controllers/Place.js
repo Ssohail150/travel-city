@@ -195,5 +195,36 @@ const updatePlaceById = async (req, res) => {
   }
 };
 
+const deletePlaceById = async (req, res) => {
+  try {
+    const id  = req.params.id;
+
+    const deletedPlace = await Place.findByIdAndDelete(id);
+
+    console.log("cccccccccc", deletedPlace)
+
+    if (!deletedPlace) {
+  return res.status(404).send({
+    success: false,
+    message: "Place not found",
+  });
+}
+
+   
+    return res.status(200).send({
+      success: true,
+      message: "Place deleted successfully!",
+    });
+
+  } catch (error) {
+    console.log("Error in deleting place", error);
+
+    return res.status(500).send({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
 module.exports = 
-{addPlace, getPlace, getPlaceById, updatePlaceById}
+{addPlace, getPlace, getPlaceById, updatePlaceById, deletePlaceById}
