@@ -38,7 +38,7 @@ const addReview = async (req, res) => {
 };
 const getReviews = async (req, res) => {
     try {
-        const reviews = await review.find();
+        const reviews = await review.find().populate('user', 'name email');
         sendRes.success = true;
         sendRes.message = 'Reviews retrieved successfully';
         sendRes.data = reviews;
