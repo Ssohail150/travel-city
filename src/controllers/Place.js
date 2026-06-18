@@ -135,5 +135,33 @@ const getPlace = async (req, res) => {
   }
 };
 
+const getPlaceById = async (req, res) => {
+  try {
+    const placeId   = req.params.id;
+
+    const placeDbRes = await Place.findById(placeId).populate("city").populate("country");
+
+    if (!placeDbRes) {
+      return res.status(404).send({
+        success: false,
+        message: "Place not found"
+      });
+    } 
+
+    return res.status(200).send({
+      success: true,
+      message: "Place fetched successfully!",
+      data: placeDbRes,
+    });
+
+  } catch (error) {
+    console.log("Error in getting place by ID", error);
+    return res.status(500).send({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
 module.exports = 
-{addPlace, getPlace}
+{addPlace, getPlace, getPlaceById}
