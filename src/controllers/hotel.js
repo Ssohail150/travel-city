@@ -68,6 +68,23 @@ const getHotels = async (req,res)=>{
         "data": {}
     }
     try {
+        const filter = req.body
+        const filterHotel = {}
+
+        if(filter.name){
+            filterHotel.name = {$regex:filter.name, $options:"i"}
+        }
+        if(filter.city){
+            filterHotel.city = {$regex:filter.city, $options:"i"}
+        }
+        if(filter.country){
+            filterHotel.country = {$regex:filter.country, $options:"i"}
+        }
+        if(filter.address){
+            filterHotel.address = {$regex:filter.address, $options:"i"}
+        }
+
+        if(Object.keys(filter).length === 0){
         const hotelList = await Hotel.find()
         .populate('city')
         .populate('country')
@@ -78,6 +95,24 @@ const getHotels = async (req,res)=>{
         sendRes.data = hotelList
 
         return res.status(200).send(sendRes)
+        }
+
+        const hotelByFilter = await Hotel.find(filterHotel)
+        .populate('city')
+        .populate('country')
+        .populate('nearbyMosques.mosque')
+
+        if(hotelByFilter.length === 0){
+            sendRes.message = "No data matches the value passed"
+            return res.status(400).send(sendRes)
+        }
+
+        sendRes.success = true
+        sendRes.message = "Here is your required data"
+        sendRes.data = hotelByFilter
+
+        return res.status(200).send(sendRes)
+        
     } catch (error) {
         console.log("Error in listing hotels",error);
         return res.status(500).send(sendRes)
@@ -112,8 +147,43 @@ const getHotelsById = async (req,res)=>{
     
 }
 
+const updateHotel = async (req,res)=>{
+    sendRes = {
+        "success": false,
+        "message": "Something went wrong",
+        "data": {}
+    }
+    try {
+        const hotelId = req.params.id
+        const update = req.body
+
+        const updateById = await Hotel.findByIdAndUpdate(hotelId,{$set:update},{new:true,runValidators:true}).populate('city').populate('country').populate('nearbyMosques.mosque')
+
+        if(Object.keys(update).length === 0){
+            sendRes.message = "No values passed for update"
+            return res.status(400).send(sendRes)
+        }
+
+        if(!updateById){
+            sendRes.message = "No hotel found corresponding to given ID"
+            return res.status(400).send(sendRes)
+        }
+
+        sendRes.success = true
+        sendRes.message = "Update done successfully"
+        sendRes.data = updateById
+
+        return res.status(200).send(sendRes)
+
+    } catch (error) {
+        console.log("Error while editing hotel by Id", error);
+        res.status(400).send(sendRes)
+    }
+}
+
 module.exports = {
     addHotel,
     getHotels,
-    getHotelsById
+    getHotelsById,
+    updateHotel
 }
