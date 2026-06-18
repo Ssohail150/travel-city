@@ -6,6 +6,7 @@ const cors = require('cors');
 const morgan = require('morgan');
 const notFound = require('./src/middlewares/notFound');
 
+
 const app = express();
 
 
@@ -31,8 +32,8 @@ app.get('/api/health', (req, res) => {
 // TODO: EVERYONE CREATE YOUR ROUTES FROM HERE
 
 
-
-app.use(notFound);
+const placeRoutes = require("./src/routes/Place")
+app.use("/api/places", placeRoutes);
 
 const PORT = process.env.PORT || 5000;
 
