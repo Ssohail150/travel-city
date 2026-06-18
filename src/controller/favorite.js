@@ -99,7 +99,7 @@ const getFavoritesById = async (req, res) => {
         });
     }
 };
-const updateFavoriteFavoritesById = async (req, res) => {
+const updateFavoritesById = async (req, res) => {
     try {
         const { id } = req.params;
 
@@ -133,4 +133,4 @@ const updateFavoriteFavoritesById = async (req, res) => {
         });
     }
 };
-module.exports = {addFavorite,getFavorites,getFavoritesById,updateFavoriteFavoritesById}
+module.exports = {addFavorite,getFavorites,getFavoritesById,updateFavoritesById}
