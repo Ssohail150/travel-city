@@ -118,10 +118,53 @@ const getAllLocalGuides = async (req, res) => {
         return res.status(500).send(giveRes)
     }
 }
+const getLocalGuideById = async (req, res) => {
+
+    let giveRes = {
+        success: false,
+        message: "Something went wrong",
+        data: null
+    }
+
+    try {
+
+        let localGuideId = req.params.id
+
+        if (!localGuideId) {
+
+            giveRes.message = "Local Guide Id is required"
+
+            return res.status(400).send(giveRes)
+        }
+
+        let localGuideDbRes = await LocalGuide.findById(localGuideId)
+
+        if (!localGuideDbRes) {
+
+            giveRes.message = "Local Guide not found"
+
+            return res.status(404).send(giveRes)
+        }
+
+        giveRes.success = true
+        giveRes.message = "Local Guide fetched successfully!"
+        giveRes.data = localGuideDbRes
+
+        return res.status(200).send(giveRes)
+
+    } catch (error) {
+
+        console.log("Error in getting Local Guide", error)
+
+        giveRes.message = error.message
+
+        return res.status(500).send(giveRes)
+    }
+}
 
 
 module.exports = {
   addLocalGuide,
   getAllLocalGuides,
- 
+ getLocalGuideById,
 }
