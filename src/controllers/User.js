@@ -44,6 +44,14 @@ const addUser = async (req, res) => {
 
 const getUsers = async (req, res) => {
     try {
+        let userId = req.params.id;
+        if (userId) {
+            const foundUser = await user.findById(userId);
+            sendRes.success = true;
+            sendRes.message = 'User retrieved by ID successfully';
+            sendRes.data = foundUser;
+            return res.status(200).json(sendRes);
+        }
         let userData = req.body;
         let query = {};
         if (userData.name) {
