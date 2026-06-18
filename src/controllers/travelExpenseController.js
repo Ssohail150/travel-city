@@ -6,7 +6,7 @@ const validateObejectId = require("../middlewares/validateObjectId");
 
 const createTravelExpense = async (req, res) => {                       /// To create travel-expense
     try{
-        const travelExpense = await TravelExpense.create(req.body);
+        const travelExpense = await TravelExpense.create(req.body);   ///...req.body, user: req.user._id     for just user 
 
         return res.status(201).json({
             success: true,
@@ -31,7 +31,7 @@ const getTravelExpenses = async (req, res) => {
     const skip =(page - 1)* limit;
     
     try {
-        const travelExpenses = await TravelExpense.find()
+        const travelExpenses = await TravelExpense.find()    /// {user: req.user._id}   for only user 
         .populate("user", "name email")
         .populate("itinerary", "title budget")
         .sort(sort)
@@ -55,7 +55,7 @@ const getTravelExpenses = async (req, res) => {
 
 const getTravelExpenseById = async (req, res) => {
     try {
-        const expense = await TravelExpense.findById(req.params.id)
+        const expense = await TravelExpense.findById(req.params.id)  ///findOne ({_id: req.params.id, user:req.user._id})   for only user
         .populate("user", "name email")
         .populate("itinerary", "title budget");
  
@@ -84,8 +84,8 @@ const getTravelExpenseById = async (req, res) => {
 
 const updateTravelExpense = async (req, res) => {
     try {
-        const travelExpense = await TravelExpense.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true,});
-
+        const travelExpense = await TravelExpense.findByIdAndUpdate(req.params.id, req.body, {new: true, runValidators: true,});   ///findOneAndUpdate({_id: req.params.id, user: req.user._id}, req.body,{new: true, runValidators: true,}) for only user 
+ 
         if(!travelExpense) {
            return res.status(404).json({
             success: false,
@@ -111,7 +111,7 @@ const updateTravelExpense = async (req, res) => {
 
 const deleteTravelExpenses = async (req, res) => {
     try{
-        const travelExpense = await TravelExpense.findByIdAndDelete(req.params.id);
+        const travelExpense = await TravelExpense.findByIdAndDelete(req.params.id);  ///findOneAndDelete({_id: req.params.id, user: req.user._id})   for only user
 
         if(!travelExpense) {
            return res.status(404).json({
