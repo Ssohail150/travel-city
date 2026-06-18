@@ -77,7 +77,7 @@ const getHotels = async (req,res)=>{
         sendRes.message = "Here is the list of Hotels"
         sendRes.data = hotelList
 
-        res.status(200).send(sendRes)
+        return res.status(200).send(sendRes)
     } catch (error) {
         console.log("Error in listing hotels",error);
         return res.status(500).send(sendRes)
@@ -85,7 +85,35 @@ const getHotels = async (req,res)=>{
     }
 }
 
+const getHotelsById = async (req,res)=>{
+    sendRes = {
+        "success": false,
+        "message": "Something went wrong",
+        "data": {}
+    }
+    try {
+        const hotelId = req.params.id
+
+        const hotelsById = await Hotel.findById(hotelId).populate('city').populate('country').populate('nearbyMosques.mosque')
+
+        if(!hotelsById){
+            sendRes.message = "No hotel found corresponding to given ID"
+            return res.status(400).send(sendRes)
+        }
+
+        sendRes.success = true
+        sendRes.message = "Here is your requires hotel details"
+        sendRes.data = hotelsById
+        return res.status(200).send(sendRes)
+    } catch (error) {
+        console.log("Error while fetching hotel by Id", error);
+        res.status(400).send(sendRes)
+    }
+    
+}
+
 module.exports = {
     addHotel,
-    getHotels
+    getHotels,
+    getHotelsById
 }
