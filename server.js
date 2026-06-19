@@ -1,5 +1,6 @@
 require('dotenv').config();
 require('./src/models/db');
+const noteRouter = require("./src/routes/culturenote")
 const countryRoutes = require('./src/routes/country');
 
 const travelExpenseRoutes = require("./src/routes/travelExpenseRoutes")
@@ -44,6 +45,12 @@ const visaInfoRoutes = require("./src/routes/VisaInfo")
 app.use("/api/local-guides",localGuideRoutes);
 app.use("/api/visa-info",visaInfoRoutes)
 // TODO: EVERYONE CREATE YOUR ROUTES FROM HERE
+app.use('/api/culture-notes', noteRouter);
+
+app.use("/api/travel-expenses", travelExpenseRoutes)
+
+app.use("/api/auth", authRoutes)
+
 app.use("/api/restaurants", restaurantRoutes);
 app.use("/api/cities", cityRoutes);
 
