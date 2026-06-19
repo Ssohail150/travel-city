@@ -1,10 +1,17 @@
 require('dotenv').config();
 require('./src/models/db');
+const countryRoutes = require('./src/routes/country');
+
+const travelExpenseRoutes = require("./src/routes/travelExpenseRoutes")
+const authRoutes = require("./src/routes/authRoutes")
 
 const express = require('express');
+const hotelRoutes = require("./src/routes/hotel")
 const cors = require('cors');
 const morgan = require('morgan');
 const notFound = require('./src/middlewares/notFound');
+const restaurantRoutes = require("./src/routes/restaurant");
+const cityRoutes = require("./src/routes/city");
 
 
 
@@ -13,6 +20,9 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+app.use('/api/countries', countryRoutes);
+app.use("/api/hotels", hotelRoutes)
 
 app.get('/check', (req, res) => {
   res.json({
@@ -33,9 +43,13 @@ const visaInfoRoutes = require("./src/routes/VisaInfo")
 
 app.use("/api/local-guides",localGuideRoutes);
 app.use("/api/visa-info",visaInfoRoutes)
+// TODO: EVERYONE CREATE YOUR ROUTES FROM HERE
+app.use("/api/restaurants", restaurantRoutes);
+app.use("/api/cities", cityRoutes);
 
 
-app.use(notFound);
+const placeRoutes = require("./src/routes/Place")
+app.use("/api/places", placeRoutes);
 
 const PORT = process.env.PORT || 5000;
 
