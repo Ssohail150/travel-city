@@ -43,5 +43,39 @@ const createCountry = async (req, res) => {
   }
 };
 
+//get country detail
+ const getCountry = async (req, res) => {
+       let sendRes = {
+"success": false,
+"message": "Country retrieval failed",
+"data": {}
+    }
+    try {
+        const countryfilter = req.body;
+        const country = await Country.findOne(countryfilter);
+        if (!country) {
+            sendRes.message = "Country not found";
+            return res.status(404).send(sendRes);
+        }   
+        if (Object.keys(countryfilter).length === 0) {
+            let countries = await Country.find();
+            sendRes.success = true;
+            sendRes.message = "Countries retrieved successfully";
+            sendRes.data = countries;
+            return res.status(200).send(sendRes);
+        }
+        sendRes.success = true;
+        sendRes.message = "Country retrieved successfully";
+        sendRes.data = country;
+        return res.status(200).send(sendRes);
+    } catch (error) {
+        sendRes.message = "Error retrieving country";
+        return res.status(500).send(sendRes);
+    }           
+ }
 
-module.exports = { createCountry };
+
+
+
+
+module.exports = { createCountry, getCountry };
