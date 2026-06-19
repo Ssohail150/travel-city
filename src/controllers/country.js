@@ -94,9 +94,34 @@ const getCountryById = async (req, res) => {
     } catch (error) {
         sendRes.message = "Error retrieving country";
         return res.status(500).send(sendRes);
-    }         
+    }       
+
 }   
 
+const updateCountry = async (req, res) => {
+    let sendRes = {
+        "success": false,           
+        "message": "Country update failed",
+        "data": {}
+    }   
+    try {
+        const countryId = req.params.id;
+        const updateData = req.body;
+        const updatedCountry = await Country.findByIdAndUpdate(countryId, updateData, { new: true });
 
+        if (!updatedCountry) {
+            sendRes.message = "Country not found";
+            return res.status(404).send(sendRes);
+        }
 
-module.exports = { createCountry, getCountry, getCountryById };
+        sendRes.success = true;
+        sendRes.message = "Country updated successfully";
+        sendRes.data = updatedCountry;
+        return res.status(200).send(sendRes);
+    } catch (error) {
+        sendRes.message = "Error updating country";
+        return res.status(500).send(sendRes);
+    }
+}
+
+module.exports = { createCountry, getCountry, getCountryById, updateCountry };
