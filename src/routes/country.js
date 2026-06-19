@@ -7,5 +7,6 @@ router.post('/add', countryRoutes.createCountry);
 
 // Route to get country details
 router.get('/list', countryRoutes.getCountry);
+router.get('/list/:id', countryRoutes.getCountryById);
 
 module.exports = router;

@@ -74,8 +74,29 @@ const createCountry = async (req, res) => {
     }           
  }
 
+const getCountryById = async (req, res) => {
+    let sendRes = {
+        "success": false,
+        "message": "Country retrieval failed",
+        "data": {}
+    }
+    try {
+        const countryId = req.params.id;    
+        const country = await Country.findById(countryId);
+        if (!country) {
+            sendRes.message = "Country not found";
+            return res.status(404).send(sendRes);
+        }                   
+        sendRes.success = true;
+        sendRes.message = "Country retrieved successfully";
+        sendRes.data = country;
+        return res.status(200).send(sendRes);
+    } catch (error) {
+        sendRes.message = "Error retrieving country";
+        return res.status(500).send(sendRes);
+    }         
+}   
 
 
 
-
-module.exports = { createCountry, getCountry };
+module.exports = { createCountry, getCountry, getCountryById };
