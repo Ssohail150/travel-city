@@ -1,6 +1,9 @@
 require('dotenv').config();
 require('./src/models/db');
 
+const travelExpenseRoutes = require("./src/routes/travelExpenseRoutes")
+const authRoutes = require("./src/routes/authRoutes")
+
 const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
@@ -31,6 +34,10 @@ app.get('/api/health', (req, res) => {
 });
 
 // TODO: EVERYONE CREATE YOUR ROUTES FROM HERE
+
+app.use("/api/travel-expenses", travelExpenseRoutes)
+
+app.use("/api/auth", authRoutes)
 
 app.use("/api/cities", cityRoutes);
 
