@@ -5,6 +5,7 @@ const travelExpenseRoutes = require("./src/routes/travelExpenseRoutes")
 const authRoutes = require("./src/routes/authRoutes")
 
 const express = require('express');
+const hotelRoutes = require("./src/routes/hotel")
 const cors = require('cors');
 const morgan = require('morgan');
 const notFound = require('./src/middlewares/notFound');
@@ -17,6 +18,8 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 app.use(morgan('dev'));
+
+app.use("/api/hotels", hotelRoutes)
 
 app.get('/check', (req, res) => {
   res.json({
