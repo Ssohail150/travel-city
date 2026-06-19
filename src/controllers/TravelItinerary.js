@@ -1,4 +1,9 @@
 const TravelItinerary = require("../models/TravelItinerary");
+const Place = require("../models/Place")
+const City = require("../models/City")
+const Country = require("../models/Country")
+const User = require("../models/User")
+
 
 const addItinerary = async (req, res) => {
   try {
@@ -38,4 +43,68 @@ const addItinerary = async (req, res) => {
   }
 };
 
-module.exports ={addItinerary}
+const getItinerary = async (req, res) => {
+  try {
+    let body = req.body;
+    let filter = {};
+
+    if (body.title) {
+      filter.title = { $regex: body.title, $options: "i" };
+    }
+
+    if (body.user) {
+      filter.user = body.user;
+    }
+
+    if (body.country) {
+      filter.country = body.country;
+    }
+
+    if (body.budget) {
+      filter.budget = body.budget;
+    }
+
+
+    if (body.isPublic !== undefined) {
+      filter.isPublic = body.isPublic;
+    }
+
+    if (body.dayCity) {
+      filter["days.city"] = body.dayCity;
+    }
+
+    if (body.dayNumber) {
+      filter["days.dayNumber"] = body.dayNumber;
+    }
+
+    // Query with populate
+    let dbRes = await TravelItinerary.find(filter)
+      .populate("user")
+      .populate("country")
+      .populate("cities")
+      .populate("days.city");
+
+    if (dbRes.length > 0) {
+      return res.status(200).send({
+        success: true,
+        message: "Itineraries fetched successfully!",
+        data: dbRes,
+      });
+    } else {
+      return res.status(404).send({
+        success: false,
+        message: "No itineraries found",
+      });
+    }
+
+  } catch (error) {
+    console.log("Error in get itinerary", error);
+    return res.status(500).send({
+      success: false,
+      message: "Server error",
+    });
+  }
+};
+
+
+module.exports ={addItinerary, getItinerary}
