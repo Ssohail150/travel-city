@@ -9,6 +9,7 @@ const hotelRoutes = require("./src/routes/hotel")
 const cors = require('cors');
 const morgan = require('morgan');
 const notFound = require('./src/middlewares/notFound');
+const transportOption = require('./src/routes/TransportOption')
 const favoriteRoutes = require('./src/routes/favorite')
 const restaurantRoutes = require("./src/routes/restaurant");
 const cityRoutes = require("./src/routes/city");
@@ -45,6 +46,8 @@ const visaInfoRoutes = require("./src/routes/VisaInfo")
 app.use("/api/local-guides",localGuideRoutes);
 app.use("/api/visa-info",visaInfoRoutes)
 // TODO: EVERYONE CREATE YOUR ROUTES FROM HERE
+
+app.use('/api/transport-option', transportOption)
 app.use("/api/favorite", favoriteRoutes)
 app.use("/api/mosque", mosqueRoute)
 
