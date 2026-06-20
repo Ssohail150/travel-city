@@ -10,7 +10,7 @@ const addFavorite= async (req, res) => {
     try {
         let favoriteDetails = req.body;
 
-        if (!favoriteDetails || !favoriteDetails.user ||!favoriteDetails.itemType) 
+        if (!favoriteDetails || !favoriteDetails.user || !favoriteDetails.itemType || !favoriteDetails.itemId) 
             {
             return res.status(400).send({
                 success: false,
@@ -21,7 +21,8 @@ const addFavorite= async (req, res) => {
 
         let createFavorite = {
             user:favoriteDetails.user,
-            itemType:favoriteDetails.itemType
+            itemType:favoriteDetails.itemType,
+            itemId:favoriteDetails.itemId
         }
     
         if(favoriteDetails.notes){

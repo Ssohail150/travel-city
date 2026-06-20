@@ -161,12 +161,13 @@ const updateHotel = async (req, res) => {
         const hotelId = req.params.id
         const update = req.body
 
-        const updateById = await Hotel.findByIdAndUpdate(hotelId, { $set: update }, { new: true, runValidators: true }).populate('city').populate('country').populate('nearbyMosques.mosque')
-
-        if (Object.keys(update).length === 0) {
+        if (!update || Object.keys(update).length === 0) {
             sendRes.message = "No values passed for update"
             return res.status(400).send(sendRes)
         }
+
+        const updateById = await Hotel.findByIdAndUpdate(hotelId, { $set: update }, { new: true, runValidators: true }).populate('city').populate('country').populate('nearbyMosques.mosque')
+
 
         if (!updateById) {
             sendRes.message = "No hotel found corresponding to given ID"

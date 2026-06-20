@@ -18,7 +18,7 @@ const addPlace = async (req, res) => {
                 sendRes
             )
         }
-        letcreatePlace = {
+        let createPlace = {
             city: placeDetails.city,
             name: placeDetails.name,
             country: placeDetails.country

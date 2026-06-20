@@ -174,7 +174,7 @@ async function updateTransportOption(req, res) {
     }
 }
 
-async function deleteTransportOption() {
+async function deleteTransportOption(req, res) {
     try {
         let id = req.params.id
 
@@ -188,9 +188,16 @@ async function deleteTransportOption() {
             _id: id
         }
 
-        const userData = await TransportOption.findByIdAndDelete(findData)
+        const userData = await TransportOption.findByIdAndDelete(id)
+
+        if (!userData) {
+            sendRes.success = false
+            sendRes.message = "Record not found"
+            return res.status(404).send(sendRes)
+        }
 
         sendRes.message = "Data deleted successfully"
+        sendRes.data = userData
 
         return res.status(200).send(sendRes)
     } catch (error) {
